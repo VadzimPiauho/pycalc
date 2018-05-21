@@ -1,0 +1,10 @@
+# pip install -r ./requriements.txt
+# virtualenv -p python3 venv
+
+
+# TODO: add base python requirements
+
+# Testing/Linting
+# pytest==3.5.1
+# pytest-cov==2.5.1
+# pytest-flake8==1.0.1

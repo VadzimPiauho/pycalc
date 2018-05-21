@@ -26,7 +26,7 @@ MASS_EXPRESSION = [
     # ("1+23==1+23", True),
     # ("e^5>=e^5+1", False),
     # ("1+24/3+1!=1+24/3+2", True),
-    ### Common tests
+    # Common tests
     # ("(100)", 100),
     # ("666", 666),
     # ("10(2+1)", 30),
@@ -40,7 +40,7 @@ MASS_EXPRESSION = [
     # ("(2.0^(pi/pi+e/e+2.0^0.0))", 8.0),
     # ("(2.0^(pi/pi+e/e+2.0^0.0))^(1.0/3.0)", 2.0),
     # ("sin(pi/2^1) + log(1*4+2^2+1, 3^2)", 2.0),
-    # ("10*e^0*log10(.4* -5/ -0.1-10) - -abs(-53/10) + -5", 10.3),
+    ("10*e^0*log10(.4* -5/ -0.1-10) - -abs(-53/10) + -5", 10.3),
     # ("log10(.4* -5/ -0.1-10)", 1.0),
     # ("- -abs(-53/10) + -5", 0.2999999999999998),
     # ("- -abs(-53/10)", 5.3),
@@ -59,7 +59,7 @@ MASS_EXPRESSION = [
     # ("sin(-cos(-sin(3.0)-cos(-sin(-3.0*5.0)-sin(cos(log10(43.0))))+cos(sin(sin(34.0-2.0^2.0)))))", -0.8274124603473457),
     # ("cos(-sin(-3.0*5.0)-sin(cos(log10(43.0))))+cos(sin(sin(34.0-2.0^2.0)))",  1.4277017012821116),
 
-    ### Error cases
+    # Error cases
     # *""
     #  * "+"
     #  * "1-"
@@ -78,7 +78,7 @@ MASS_EXPRESSION = [
     #  * "6 < = 6"
     #  * "6 * * 6"
     #  * "((((("
-    ### My cases
+    # My cases
     # ("-2", -2),
     # ("3-2", 1),
     # ("(-3)", -3),
@@ -107,7 +107,6 @@ MASS_EXPRESSION = [
     # ("2+2*-2", -2),
     # ("2^2^3", 256),
     # ("2-2-3", -3),
-
     # ("5/-1*2", -10),
     # ("5/-1", -5),
     # ("5^-1/2", 0.1),
@@ -136,3 +135,9 @@ MASS_EXPRESSION = [
     # ("2+sin(1/3)", 2.3271946967961523),
     # ("-sin(2)^2", -0.826821810431806),
 ]
+for counter, EXPRESSION in enumerate(MASS_EXPRESSION):
+    res = test_func(EXPRESSION[0], operators)
+    if res == EXPRESSION[1]:
+        print("{}\t\t{}".format("Done", EXPRESSION[0]))
+    else:
+        print("{}\t\t{}".format("False", EXPRESSION[0]))
