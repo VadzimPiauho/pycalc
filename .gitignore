@@ -1,0 +1,19 @@
+# IDE configs
+.idea/
+.vscode/
+
+# cache
+**/.cache
+**/.pytest_cache
+
+# virtualenvs
+**/py_env
+**/venv
+
+# coverage report
+**/htmlcov
+**/.coverage
+**/coverage.xml
+
+# build products
+*.pyc
