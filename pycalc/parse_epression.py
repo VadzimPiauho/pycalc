@@ -51,7 +51,7 @@ def check_int_float(number):
 def parse_expression(expression):
     number = ''
     func = ''
-    oper = ''
+    operator = ''
     bracket_stack = []
     for ind, val in enumerate(expression):
         if val in '1234567890.':  # если символ - цифра, то собираем число
@@ -90,20 +90,20 @@ def parse_expression(expression):
             # если символ + или -, стоит в начале строки либо
             # после "(,^<>!=/*", либо собираемый оператор не равен 0 и состоит из символов "(,^<>!=/*"
             if (val == "+" or val == "-") and (len(EXPRESSION_PARSE) == 0 or (
-                    str(EXPRESSION_PARSE[-1]) in "(,^<>!=/*" or (len(oper) != 0 and oper in "(,^<>!=/*"))):
+                    str(EXPRESSION_PARSE[-1]) in "(,^<>!=/*" or (len(operator) != 0 and operator in "(,^<>!=/*"))):
                 val += 'u'  # это унарный минус
                 # если до унарного минуса собирался какой
                 # либо оператор из operators выдаем его в итоговое выражение и обнуляем
-                if oper and oper in operators:
-                    EXPRESSION_PARSE.append(oper)
-                    oper = ''
+                if operator and operator in operators:
+                    EXPRESSION_PARSE.append(operator)
+                    operator = ''
                 EXPRESSION_PARSE.append(val)  # добавляем в итоговое выражение унарный минус
             else:
-                oper += val
-        elif oper:  # если символ не оператор, то выдаём собранный оператор и начинаем собирать заново
-            if oper in operators:
-                EXPRESSION_PARSE.append(oper)
-                oper = ''
+                operator += val
+        elif operator:  # если символ не оператор, то выдаём собранный оператор и начинаем собирать заново
+            if operator in operators:
+                EXPRESSION_PARSE.append(operator)
+                operator = ''
         if val in "(),":  # если символ "(),"
             if val == "(":
                 bracket_stack.append(val)  # добавляем в стек скобок

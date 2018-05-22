@@ -1,10 +1,10 @@
 from .parse_epression import operators, list_functions
 
 
-def calc(DATA_OUT):
+def calc(data_out):
     stack = []
     count_list = []
-    for token in DATA_OUT:
+    for token in data_out:
         if token in operators:  # если приходящий элемент - оператор,
             if token not in list_functions:
                 if token == "-u" or token == "+u":
