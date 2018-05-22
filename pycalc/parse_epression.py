@@ -1,7 +1,6 @@
 list_module = ["math"]
 list_functions = ["abs", "pow", "round"]  # лист имеющихся функций в выражении
 static_value = {}
-EXPRESSION_PARSE = []  # выражение после парсинга
 operators = {
     '!': (None, None),
     '=': (None, None),
@@ -40,19 +39,20 @@ def replace_plus_minus(expression):
     return expression
 
 
-def check_int_float(number):
-    tmp = float(number)
-    if tmp.is_integer():
-        EXPRESSION_PARSE.append(int(tmp))
-    else:
-        EXPRESSION_PARSE.append(float(number))
-
-
 def parse_expression(expression):
     number = ''
     func = ''
     operator = ''
     bracket_stack = []
+    EXPRESSION_PARSE = []  # выражение после парсинга
+
+    def check_int_float(number):
+        tmp = float(number)
+        if tmp.is_integer():
+            EXPRESSION_PARSE.append(int(tmp))
+        else:
+            EXPRESSION_PARSE.append(float(number))
+
     for ind, val in enumerate(expression):
         if val in '1234567890.':  # если символ - цифра, то собираем число
             if func:

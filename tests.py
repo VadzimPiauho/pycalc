@@ -1,11 +1,13 @@
+# python -m unittest tests.py
+
 import unittest
 from main import test
 
 MASS_EXPRESSION = [
-    # Unary operators
-    ("-13", -13),
+    # # Unary operators
+    # ("-13", -13),
     # ("6-(-13)", 19),
-    ("1---1", 0),
+    # ("1---1", 0),
     # ("-+---+-1", -1),
     # # Operation priority
     # ("1+2*2", 5),

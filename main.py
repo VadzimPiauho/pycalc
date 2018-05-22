@@ -35,6 +35,7 @@ def test(expression):
     print(exp)
     exp = calc(exp)
     print(exp)
+    print("===================================")
     return exp
 
 

@@ -1,10 +1,9 @@
 from .parse_epression import operators
 
-STACK_OPERATOR = []  # стек операторов
-DATA_OUT = []
-
 
 def poland_notation(expression_parse):
+    STACK_OPERATOR = []  # стек операторов
+    DATA_OUT = []
     for i in expression_parse:  # преобразуем выражение после парсинга по алгоритму обратной польской записи
         if i in operators:
             while STACK_OPERATOR and STACK_OPERATOR[-1] != "(" and operators[i][0] <= operators[STACK_OPERATOR[-1]][0]:
