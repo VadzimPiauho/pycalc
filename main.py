@@ -33,7 +33,9 @@ def test(expression):
     print(exp)
     exp = poland_notation(exp)
     print(exp)
-    return calc(exp)
+    exp = calc(exp)
+    print(exp)
+    return exp
 
 
 if __name__ == '__main__':
@@ -44,4 +46,4 @@ if __name__ == '__main__':
     EXPRESSION = poland_notation(EXPRESSION)
     # print(EXPRESSION)
     EXPRESSION = calc(EXPRESSION)
-    # print(EXPRESSION)
+    print(EXPRESSION)
