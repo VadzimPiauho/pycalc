@@ -1,7 +1,8 @@
 import argparse
 
 from pycalc.calc_function import calc
-from pycalc.parse_epression import list_module, operators, static_value, replace_plus_minus, parse_expression
+from pycalc.parse_epression import list_module, operators, static_value, replace_plus_minus, parse_expression, \
+    list_functions
 from pycalc.poland_notation_function import poland_notation
 
 parser = argparse.ArgumentParser(description='Pure-python command-line calculator.')
@@ -20,22 +21,23 @@ for modname in list_module:
     for key in modules.__dict__:
         if callable(modules.__dict__[key]):
             operators[key] = (7, getattr(modules, key))
+            list_functions.append(key)
         else:
             static_value[key] = getattr(modules, key)
 
 
 def test(expression):
     exp = expression.replace(" ", "")
-    print(exp)
+    # print(exp)
     exp = replace_plus_minus(exp)
-    print(exp)
+    # print(exp)
     exp = parse_expression(exp)
-    print(exp)
+    # print(exp)
     exp = poland_notation(exp)
-    print(exp)
+    # print(exp)
     exp = calc(exp)
-    print(exp)
-    print("===================================")
+    # print(exp)
+    # print("===================================")
     return exp
 
 
