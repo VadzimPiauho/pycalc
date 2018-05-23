@@ -113,9 +113,14 @@ def parse_expression(expression):
                     x = bracket_stack.pop()
                     if x == "(":  # если в стеке скобок "("
                         EXPRESSION_PARSE.append(val)  # добавляем в итоговое выражение ")
-                    elif x == "[":
-                        EXPRESSION_PARSE.append("]")
-                        break
+                        if len(bracket_stack):
+                            x = bracket_stack.pop()
+                            if x == "(":
+                                bracket_stack.append(x)
+                                break
+                            elif x == "[":
+                                EXPRESSION_PARSE.append("]")
+                                break
             else:
                 EXPRESSION_PARSE.append(val)
     if number:  # если в конце строки есть число, выдаём его
