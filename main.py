@@ -28,7 +28,6 @@ for modname in list_module:
 
 def test(expression):
     exp = expression.replace(" ", "")
-    # print(exp)
     exp = replace_plus_minus(exp)
     # print(exp)
     exp = parse_expression(exp)
