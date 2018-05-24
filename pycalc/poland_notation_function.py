@@ -8,16 +8,6 @@ def poland_notation(expression_parse):
         if i in operators:
             while STACK_OPERATOR and STACK_OPERATOR[-1] != "(" and operators[i][0] <= operators[STACK_OPERATOR[-1]][0]:
                 x = STACK_OPERATOR.pop()
-                # if (x == "+u" or x == "-u") and i in "+-*/":
-                #     if len(STACK_OPERATOR) >= 1:
-                #         DATA_OUT.append(x)
-                #         #DATA_OUT.append(STACK_OPERATOR.pop())
-                #     else:
-                #         DATA_OUT.append(x)
-                #         break
-                # elif x == "+u" or x == "-u":
-                #     STACK_OPERATOR.append(x)
-                #     break
                 if x == "^" and i == "^":  # решение проблемы приоритетов если 5^-1
                     STACK_OPERATOR.append(i)
                     break
