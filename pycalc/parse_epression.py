@@ -44,14 +44,14 @@ def parse_expression(expression):
     func = ''
     operator = ''
     bracket_stack = []
-    EXPRESSION_PARSE = []  # выражение после парсинга
+    expression_parse = []  # выражение после парсинга
 
     def check_int_float(number):
         tmp = float(number)
         if tmp.is_integer():
-            EXPRESSION_PARSE.append(int(tmp))
+            expression_parse.append(int(tmp))
         else:
-            EXPRESSION_PARSE.append(float(number))
+            expression_parse.append(float(number))
 
     for ind, val in enumerate(expression):
         if val in '1234567890.':  # если символ - цифра, то собираем число
@@ -65,14 +65,14 @@ def parse_expression(expression):
             else:
                 number += val
         elif number:  # если символ не цифра, то выдаём собранное число и начинаем собирать заново
-            if EXPRESSION_PARSE and EXPRESSION_PARSE[-1] == ")":
+            if expression_parse and expression_parse[-1] == ")":
                 # если цифра не первая в выражении и и последный символ
                 # в выражении закрывающаяся скобка , то ставим знак умножения и выдаем цифру
-                EXPRESSION_PARSE.append("*")
+                expression_parse.append("*")
                 check_int_float(number)
             elif val == "(":  # если после цифры скобка, то выдаем цифру и ставим знак умножения
                 check_int_float(number)
-                EXPRESSION_PARSE.append("*")
+                expression_parse.append("*")
             else:  # просто выдаем цифру
                 check_int_float(number)
             number = ''
@@ -80,58 +80,58 @@ def parse_expression(expression):
             func += val
         elif func:  # если символ не буква, то выдаём собранное слово и начинаем собирать заново
             if func in static_value:
-                EXPRESSION_PARSE.append(static_value[func])
+                expression_parse.append(static_value[func])
             else:
-                EXPRESSION_PARSE.append(str(func))  # выдаем слово в итоговое выражение
-                EXPRESSION_PARSE.append("[")  # открываем скобку для аргументов функции
+                expression_parse.append(str(func))  # выдаем слово в итоговое выражение
+                expression_parse.append("[")  # открываем скобку для аргументов функции
                 bracket_stack.append("[")  # добавляем скобку в стек скобок
             func = ''
         if val in operators:  # если символ - оператор или скобка или запятая, то собираем оператор
             # если символ + или -, стоит в начале строки либо
             # после "(,^<>!=/*", либо собираемый оператор не равен 0 и состоит из символов "(,^<>!=/*"
-            if (val == "+" or val == "-") and (len(EXPRESSION_PARSE) == 0 or (
-                    str(EXPRESSION_PARSE[-1]) in "(,^<>!=/*" or (len(operator) != 0 and operator in "(,^<>!=/*"))):
+            if (val == "+" or val == "-") and (len(expression_parse) == 0 or (
+                    str(expression_parse[-1]) in "(,^<>!=/*" or (len(operator) != 0 and operator in "(,^<>!=/*"))):
                 val += 'u'  # это унарный минус
                 # если до унарного минуса собирался какой
                 # либо оператор из operators выдаем его в итоговое выражение и обнуляем
                 if operator and operator in operators:
-                    EXPRESSION_PARSE.append(operator)
+                    expression_parse.append(operator)
                     operator = ''
-                EXPRESSION_PARSE.append(val)  # добавляем в итоговое выражение унарный минус
+                expression_parse.append(val)  # добавляем в итоговое выражение унарный минус
             else:
                 operator += val
         elif operator:  # если символ не оператор, то выдаём собранный оператор и начинаем собирать заново
             if operator in operators:
-                EXPRESSION_PARSE.append(operator)
+                expression_parse.append(operator)
                 operator = ''
         if val in "(),":  # если символ "(),"
             if val == "(":
                 bracket_stack.append(val)  # добавляем в стек скобок
-                EXPRESSION_PARSE.append(val)  # добавляем в итоговое выражение
+                expression_parse.append(val)  # добавляем в итоговое выражение
             elif val == ")":
                 while bracket_stack:  # проверяем стек скобок
                     x = bracket_stack.pop()
                     if x == "(":  # если в стеке скобок "("
-                        EXPRESSION_PARSE.append(val)  # добавляем в итоговое выражение ")
+                        expression_parse.append(val)  # добавляем в итоговое выражение ")
                         if len(bracket_stack):
                             x = bracket_stack.pop()
                             if x == "(":
                                 bracket_stack.append(x)
                                 break
                             elif x == "[":
-                                EXPRESSION_PARSE.append("]")
+                                expression_parse.append("]")
                                 break
             else:
-                EXPRESSION_PARSE.append(val)
+                expression_parse.append(val)
     if number:  # если в конце строки есть число, выдаём его
-        if EXPRESSION_PARSE and (EXPRESSION_PARSE[-1] == ")" or EXPRESSION_PARSE[-1] == "]"):
+        if expression_parse and (expression_parse[-1] == ")" or expression_parse[-1] == "]"):
             # если перед полследним числом ")" или "ъ",
             # то ставим умножение и выдаем число, иначе просто выдаем число
-            EXPRESSION_PARSE.append("*")
+            expression_parse.append("*")
             check_int_float(number)
         else:
             check_int_float(number)
     elif func:
         if func in static_value:
-            EXPRESSION_PARSE.append(static_value[func])
-    return EXPRESSION_PARSE
+            expression_parse.append(static_value[func])
+    return expression_parse

@@ -1,5 +1,11 @@
 # python -m unittest tests.py
 
+# pip install coverage
+# coverage run -m unittest tests.py
+# coverage report
+# coverage html
+
+
 import unittest
 from main import test
 
