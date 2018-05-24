@@ -41,8 +41,8 @@ def test(expression):
 
 
 if __name__ == '__main__':
-    EXPRESSION = args.EXPRESSION.replace(" ", "")
-    EXPRESSION = replace_plus_minus(EXPRESSION)
+    #EXPRESSION = args.EXPRESSION.replace(" ", "")
+    EXPRESSION = replace_plus_minus(args.EXPRESSION)
     EXPRESSION = parse_expression(EXPRESSION)
     # print(EXPRESSION)
     EXPRESSION = poland_notation(EXPRESSION)

@@ -12,7 +12,7 @@ from main import test
 MASS_EXPRESSION = [
 
     # # Error cases
-    #  *""
+    #  * ""
     #  * "+"
     #  * "1-"
     #  * "1 2"
