@@ -60,8 +60,8 @@ def parse_expression(expression):
                 if any(tmp in s for s in list_functions):
                     func = func + val
                     continue
-                else:
-                    number += val
+                # else:
+                #     number += val
             else:
                 number += val
         elif number:  # если символ не цифра, то выдаём собранное число и начинаем собирать заново
