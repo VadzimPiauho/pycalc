@@ -2,6 +2,11 @@ from .parse_epression import operators
 
 
 def poland_notation(expression_parse):
+    """
+    Function of converting an expression to a reverse polish notation
+    :param expression_parse: separated expression
+    :return: modified expression for the reverse polish notation
+    """
     stack_operator = []  # стек операторов
     data_out = []
     for i in expression_parse:  # преобразуем выражение после парсинга по алгоритму обратной польской записи

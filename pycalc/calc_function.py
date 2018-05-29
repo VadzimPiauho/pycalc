@@ -2,6 +2,11 @@ from .parse_epression import operators, list_functions
 
 
 def calc(data_out):
+    """
+    Function of result calculation
+    :param data_out: modified expression for the reverse polish notation
+    :return: counting result
+    """
     stack = []
     count_list = []
     for token in data_out:

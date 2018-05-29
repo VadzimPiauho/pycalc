@@ -27,25 +27,22 @@ for modname in list_module:
 
 
 def test(expression):
+    """
+    Function of testing the program
+    :param expression: Expression for testing
+    :return: result of expression
+    """
     exp = expression.replace(" ", "")
     exp = replace_plus_minus(exp)
-    # print(exp)
     exp = parse_expression(exp)
-    # print(exp)
     exp = poland_notation(exp)
-    # print(exp)
     exp = calc(exp)
-    # print(exp)
-    # print("===================================")
     return exp
 
 
 if __name__ == '__main__':
-    #EXPRESSION = args.EXPRESSION.replace(" ", "")
     EXPRESSION = replace_plus_minus(args.EXPRESSION)
     EXPRESSION = parse_expression(EXPRESSION)
-    # print(EXPRESSION)
     EXPRESSION = poland_notation(EXPRESSION)
-    # print(EXPRESSION)
     EXPRESSION = calc(EXPRESSION)
     print(EXPRESSION)

@@ -4,28 +4,33 @@ static_value = {}
 operators = {
     '!': (None, None),
     '=': (None, None),
-    'abs': (7, abs),  # done
-    'pow': (7, pow),  # done
-    'round': (7, round),  # done
-    '^': (6, lambda x, y: x ** y),  # done
-    '-u': (5, lambda x, y=0: y - x),  # done
-    '+u': (5, lambda x: x),  # done
-    '*': (4, lambda x, y: x * y),  # done
-    '/': (4, lambda x, y: x / y),  # done
-    '//': (4, lambda x, y: x // y),  # done
-    '%': (4, lambda x, y: x % y),  # done
-    '+': (3, lambda x, y: x + y),  # done
-    '-': (3, lambda x, y: x - y),  # done
-    '!=': (2, lambda x, y: x != y),  # done
-    '==': (2, lambda x, y: x == y),  # done
-    '<': (1, lambda x, y: x < y),  # done
-    '<=': (1, lambda x, y: x <= y),  # done
-    '>': (1, lambda x, y: x > y),  # done
-    '>=': (1, lambda x, y: x >= y),  # done
+    'abs': (7, abs),
+    'pow': (7, pow),
+    'round': (7, round),
+    '^': (6, lambda x, y: x ** y),
+    '-u': (5, lambda x, y=0: y - x),
+    '+u': (5, lambda x: x),
+    '*': (4, lambda x, y: x * y),
+    '/': (4, lambda x, y: x / y),
+    '//': (4, lambda x, y: x // y),
+    '%': (4, lambda x, y: x % y),
+    '+': (3, lambda x, y: x + y),
+    '-': (3, lambda x, y: x - y),
+    '!=': (2, lambda x, y: x != y),
+    '==': (2, lambda x, y: x == y),
+    '<': (1, lambda x, y: x < y),
+    '<=': (1, lambda x, y: x <= y),
+    '>': (1, lambda x, y: x > y),
+    '>=': (1, lambda x, y: x >= y),
 }
 
 
 def replace_plus_minus(expression):
+    """
+    Function of removing spaces from an expression
+    :param expression: Input expression
+    :return: expression without spaces
+    """
     dic = {"--": "+", "+-": "-", "-+": "-", "++": "+"}
     old_len = len(expression)
     while True:
@@ -39,19 +44,30 @@ def replace_plus_minus(expression):
     return expression
 
 
+def check_int_float(number, expression_parse):
+    """
+    Function for checking the type of a number
+    :param number: Input expression
+    :param expression_parse: list of separated expression
+    """
+    tmp = float(number)
+    if tmp.is_integer():
+        expression_parse.append(int(tmp))
+    else:
+        expression_parse.append(float(number))
+
+
 def parse_expression(expression):
+    """
+    Function of dividing expression by numbers, functions and operations
+    :param expression: Input expression
+    :return: separated expression
+    """
     number = ''
     func = ''
     operator = ''
     bracket_stack = []
     expression_parse = []  # выражение после парсинга
-
-    def check_int_float(number):
-        tmp = float(number)
-        if tmp.is_integer():
-            expression_parse.append(int(tmp))
-        else:
-            expression_parse.append(float(number))
 
     for ind, val in enumerate(expression):
         if val in '1234567890.':  # если символ - цифра, то собираем число
@@ -69,12 +85,12 @@ def parse_expression(expression):
                 # если цифра не первая в выражении и и последный символ
                 # в выражении закрывающаяся скобка , то ставим знак умножения и выдаем цифру
                 expression_parse.append("*")
-                check_int_float(number)
+                check_int_float(number, expression_parse)
             elif val == "(":  # если после цифры скобка, то выдаем цифру и ставим знак умножения
-                check_int_float(number)
+                check_int_float(number, expression_parse)
                 expression_parse.append("*")
             else:  # просто выдаем цифру
-                check_int_float(number)
+                check_int_float(number, expression_parse)
             number = ''
         if val in 'abcdefghijklmnopqrstuvwxyz':  # если символ - ,буква, то собираем слово
             func += val
@@ -128,9 +144,9 @@ def parse_expression(expression):
             # если перед полследним числом ")" или "ъ",
             # то ставим умножение и выдаем число, иначе просто выдаем число
             expression_parse.append("*")
-            check_int_float(number)
+            check_int_float(number, expression_parse)
         else:
-            check_int_float(number)
+            check_int_float(number, expression_parse)
     elif func:
         if func in static_value:
             expression_parse.append(static_value[func])
