@@ -22,7 +22,7 @@ def poland_notation(expression_parse):
                 else:
                     data_out.append(x)
             stack_operator.append(i)
-        elif i == ")":  # если ")" выдаем из стека операторов все элементы по не "("
+        elif i == ")":  # если ")" выдаем из стека операторов все элементы пока не "("
             while stack_operator:
                 x = stack_operator.pop()
                 if x not in "(":
@@ -36,7 +36,6 @@ def poland_notation(expression_parse):
                 data_out.append(stack_operator.pop())
         else:
             data_out.append(i)  # если элемент - число, отправим его сразу на выход
-
     while stack_operator:
         data_out.append(stack_operator.pop())
     return data_out

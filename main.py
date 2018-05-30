@@ -1,8 +1,7 @@
 import argparse
 
 from pycalc.calc_function import calc
-from pycalc.parse_epression import list_module, operators, static_value, replace_plus_minus, parse_expression, \
-    list_functions
+from pycalc.parse_epression import list_module, operators, static_value, parse_expression, list_functions
 from pycalc.poland_notation_function import poland_notation
 
 parser = argparse.ArgumentParser(description='Pure-python command-line calculator.')
@@ -32,17 +31,14 @@ def test(expression):
     :param expression: Expression for testing
     :return: result of expression
     """
-    exp = expression.replace(" ", "")
-    exp = replace_plus_minus(exp)
-    exp = parse_expression(exp)
+    exp = parse_expression(expression)
     exp = poland_notation(exp)
     exp = calc(exp)
     return exp
 
 
 if __name__ == '__main__':
-    EXPRESSION = replace_plus_minus(args.EXPRESSION)
-    EXPRESSION = parse_expression(EXPRESSION)
+    EXPRESSION = parse_expression(args.EXPRESSION)
     EXPRESSION = poland_notation(EXPRESSION)
     EXPRESSION = calc(EXPRESSION)
     print(EXPRESSION)

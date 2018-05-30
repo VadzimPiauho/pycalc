@@ -39,7 +39,9 @@ class CalcTest(unittest.TestCase):
         test_list = [
             ("-13", -13),
             ("6-(-13)", 19),
+            ("1-- -1", 0),
             ("1---1", 0),
+            ("1 -  1", 0),
             ("-+---+-1", -1), ]
         for counter, EXPRESSION in enumerate(test_list):
             self.assertEqual(test(EXPRESSION[0]), EXPRESSION[1])

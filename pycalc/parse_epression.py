@@ -70,7 +70,9 @@ def parse_expression(expression):
     expression_parse = []  # выражение после парсинга
 
     for ind, val in enumerate(expression):
-        if val in '1234567890.':  # если символ - цифра, то собираем число
+        if val in " ":
+            continue
+        elif val in '1234567890.':  # если символ - цифра, то собираем число
             if func:
                 tmp = func + val
                 if any(tmp in s for s in list_functions):
@@ -116,9 +118,20 @@ def parse_expression(expression):
                 expression_parse.append(val)  # добавляем в итоговое выражение унарный минус
             else:
                 operator += val
+                operator = replace_plus_minus(operator)
         elif operator:  # если символ не оператор, то выдаём собранный оператор и начинаем собирать заново
             if operator in operators:
-                expression_parse.append(operator)
+                if expression_parse and expression_parse[-1] == "-u" or expression_parse[-1] == "+u":
+                    operator += 'u'
+                    x = expression_parse.pop()
+                    if x == operator == "+u":
+                        expression_parse.append(operator)
+                    elif x == operator == "-u":
+                        expression_parse.append("+u")
+                    elif (x == "-u" and operator == "+u") or (x == "+u" and operator == "-u"):
+                        expression_parse.append("-u")
+                else:
+                    expression_parse.append(operator)
                 operator = ''
         if val in "(),":  # если символ "(),"
             if val == "(":
