@@ -13,7 +13,7 @@ parser.add_argument('-m', '--use-modules', nargs='+', action="store", dest="MODU
 args = parser.parse_args()
 
 if args.MODULE:
-    list_module = ["math"] + args.MODULE
+    list_module = ["math"].extend(args.MODULE)
 
 for modname in list_module:
     modules = __import__(modname)

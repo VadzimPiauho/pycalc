@@ -1,5 +1,7 @@
 import math
 
+from exception import SettingsException
+
 static_value = {}
 list_functions = ["abs", "pow", "round"]  # лист имеющихся функций в выражении
 operators = {
@@ -160,6 +162,8 @@ def test_func(EXPRESSION, operators):
         elif func:
             if func in static_value:
                 EXPRESSION_PARSE.append(static_value[func])
+        elif oper:
+            EXPRESSION_PARSE.append(oper)
 
     parse_expression(EXPRESSION)  # функция парсинга входного выражения по элементам
 
@@ -207,33 +211,35 @@ def test_func(EXPRESSION, operators):
     def calc(DATA_OUT):
         stack = []
         count_list = []
-        for token in DATA_OUT:
-            if token in operators:  # если приходящий элемент - оператор,
-                if token not in list_functions:
-                    if token == "-u" or token == "+u":
-                        stack.append(operators[token][1](stack.pop()))
-                    elif token == "^":
-                        y, x = stack.pop(), stack.pop()  # забираем 2 числа из стека
-                        stack.append(operators[token][1](x, y))
-                    else:
-                        y, x = stack.pop(), stack.pop()  # забираем 2 числа из стека
-                        stack.append(operators[token][1](x, y))
-                else:
-                    while stack:
-                        x = stack.pop()
-                        if x == "]" or x == ",":
-                            continue
-                        elif x == "[":
-                            count_list.reverse()
-                            stack.append(operators[token][1](*count_list))
-                            count_list.clear()
-                            break
+        try:
+            for token in DATA_OUT:
+                if token in operators:  # если приходящий элемент - оператор,
+                    if token not in list_functions:
+                        if token == "-u" or token == "+u":
+                            stack.append(operators[token][1](stack.pop()))
+                        elif token == "^":
+                            y, x = stack.pop(), stack.pop()  # забираем 2 числа из стека
+                            stack.append(operators[token][1](x, y))
                         else:
-                            count_list.append(x)
-            else:
-                stack.append(token)
-        return stack[0]  # результат вычисления - единственный элемент в стеке
-
+                            y, x = stack.pop(), stack.pop()  # забираем 2 числа из стека
+                            stack.append(operators[token][1](x, y))
+                    else:
+                        while stack:
+                            x = stack.pop()
+                            if x == "]" or x == ",":
+                                continue
+                            elif x == "[":
+                                count_list.reverse()
+                                stack.append(operators[token][1](*count_list))
+                                count_list.clear()
+                                break
+                            else:
+                                count_list.append(x)
+                else:
+                    stack.append(token)
+            return stack[0]  # результат вычисления - единственный элемент в стеке
+        except Exception:
+            raise SettingsException("ololo")
     return calc(DATA_OUT)
 
 
@@ -241,6 +247,7 @@ if __name__ == '__main__':
     MASS_EXPRESSION = [
         # # Unary operators
         # ("-13", -13),
+        ("123+", 123),
         # ("6-(-13)", 19),
         # ("1-- -1", 0),
         # ("1---1", 0),
