@@ -6,5 +6,5 @@ class MyException(Exception):
         self.name = name
         self.message = self.message.format(name)
 
-    def __str__(self):
-        print(self.message)
+    # def __str__(self):
+    #     print(self.message)
