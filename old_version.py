@@ -79,6 +79,8 @@ def test_func(EXPRESSION, operators):
                         if any(tmp in s for s in list_functions):
                             func = func + val
                             continue
+                        else:
+                            raise MyException("I don't found function {}".format(tmp))
                         # else:
                         #     number += val
                     else:
@@ -145,19 +147,20 @@ def test_func(EXPRESSION, operators):
                         bracket_stack.append(val)  # добавляем в стек скобок
                         EXPRESSION_PARSE.append(val)  # добавляем в итоговое выражение
                     elif val == ")":
-                        while bracket_stack:  # проверяем стек скобок
-                            x = bracket_stack.pop()
-                            if x == "(":  # если в стеке скобок "("
-                                EXPRESSION_PARSE.append(val)  # добавляем в итоговое выражение ")
-                                if len(bracket_stack):
-                                    x = bracket_stack.pop()
-                                    if x == "(":
-                                        bracket_stack.append(x)
-                                        break
-                                    elif x == "[":
-                                        EXPRESSION_PARSE.append("]")
-                                        break
-                        if not bracket_stack:
+                        if bracket_stack:
+                            while bracket_stack:  # проверяем стек скобок
+                                x = bracket_stack.pop()
+                                if x == "(":  # если в стеке скобок "("
+                                    EXPRESSION_PARSE.append(val)  # добавляем в итоговое выражение ")
+                                    if len(bracket_stack):
+                                        x = bracket_stack.pop()
+                                        if x == "(":
+                                            bracket_stack.append(x)
+                                            break
+                                        elif x == "[":
+                                            EXPRESSION_PARSE.append("]")
+                                            break
+                        elif not bracket_stack:
                             raise MyException("brackets are not balanced")
                     else:
                         EXPRESSION_PARSE.append(val)
@@ -395,25 +398,26 @@ if __name__ == '__main__':
         # ("2+sin(1/3)", 2.3271946967961523),
         # ("-sin(2)^2", -0.826821810431806),
 
-        # # Error cases
-        # ("",),
-        # ("+",),
-        # ("1-",),
-        # ("1 2",),
-        # ("ee",),
-        # ("123e",),
-        # ("==7",),
-        # ("1 * * 2",),
-        # ("1 + 2(3 * 4))",),
-        # ("((1+2)",),
-        # ("1 + 1 2 3 4 5 6 ",),
-        # ("log100(100)",),
-        # ("------",),
-        # ("5 > = 6",),
-        # ("5 / / 6",),
-        # ("6 < = 6",),
-        # ("6 * * 6",),
-        # ("(((((",),
+        # Error cases
+        ("",),
+        ("+",),
+        ("1-",),
+        ("1 2",),
+        ("ee",),
+        ("123e",),
+        ("==7",),
+        ("1 * * 2",),
+        ("1 + 2(3 * 4))",),
+        ("((1+2)",),
+        ("1 + 1 2 3 4 5 6 ",),
+        (")1 + 1 2 3 4 5 6 ",),
+        ("log100(100)",),
+        ("------",),
+        ("5 > = 6",),
+        ("5 / / 6",),
+        ("6 < = 6",),
+        ("6 * * 6",),
+        ("(((((",),
 
     ]
     for counter, EXPRESSION in enumerate(MASS_EXPRESSION):
