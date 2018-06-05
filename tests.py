@@ -8,6 +8,7 @@
 
 import unittest
 from main import test
+from exception import MyException
 
 
 class CalcTest(unittest.TestCase):
@@ -197,8 +198,9 @@ class CalcTest(unittest.TestCase):
             # ("6 * * 6",),
             # ("(((((",),
         ]
-        for counter, EXPRESSION in enumerate(test_list):
-            self.assertEqual(test(EXPRESSION[0]), EXPRESSION[1])
+        for EXPRESSION in test_list:
+            with self.assertRaises(MyException):
+                test(EXPRESSION)
 
 
 if __name__ == '__main__':
