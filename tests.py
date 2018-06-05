@@ -135,6 +135,10 @@ class CalcTest(unittest.TestCase):
     def test_my(self):
         # My cases
         test_list = [
+            ("2+ +2", 4),
+            ("2>=2", True),
+            ("2  < + 2", False),
+            ("2  < ++ ++ 2", False),
             ("-2", -2),
             ("3-2", 1),
             ("(-3)", -3),

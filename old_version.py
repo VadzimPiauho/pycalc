@@ -71,9 +71,9 @@ def test_func(EXPRESSION, operators):
         bracket_stack = []
         if EXPRESSION:
             for ind, val in enumerate(EXPRESSION):
-                if val in " ":
-                    continue
-                elif val in '1234567890.':  # если символ - цифра, то собираем число
+                # if val in " ":
+                #     continue
+                if val in '1234567890.':  # если символ - цифра, то собираем число
                     if func:
                         tmp = func + val
                         if any(tmp in s for s in list_functions):
@@ -131,9 +131,15 @@ def test_func(EXPRESSION, operators):
                                 EXPRESSION_PARSE.append("+u")
                             elif (x == "-u" and oper == "+u") or (x == "+u" and oper == "-u"):
                                 EXPRESSION_PARSE.append("-u")
+                        elif (oper == "+" or oper == "-") and EXPRESSION_PARSE and EXPRESSION_PARSE[-1] == "-" or \
+                                EXPRESSION_PARSE[-1] == "+":
+                            oper += EXPRESSION_PARSE.pop()
+                            EXPRESSION_PARSE.append(replace_plus_minus(oper))
                         else:
                             EXPRESSION_PARSE.append(oper)
                         oper = ''
+                    else:
+                        raise MyException("Dont find operator {}".format(oper))
                 if val in "(),":  # если символ "(),"
                     if val == "(":
                         bracket_stack.append(val)  # добавляем в стек скобок
@@ -215,36 +221,33 @@ def test_func(EXPRESSION, operators):
     def calc(DATA_OUT):
         stack = []
         count_list = []
-        try:
-            for token in DATA_OUT:
-                if token in operators:  # если приходящий элемент - оператор,
-                    if token not in list_functions:
-                        if token == "-u" or token == "+u":
-                            stack.append(operators[token][1](stack.pop()))
-                        elif token == "^":
-                            y, x = stack.pop(), stack.pop()  # забираем 2 числа из стека
-                            stack.append(operators[token][1](x, y))
-                        else:
-                            y, x = stack.pop(), stack.pop()  # забираем 2 числа из стека
-                            stack.append(operators[token][1](x, y))
-                    else:
-                        while stack:
-                            x = stack.pop()
-                            if x == "]" or x == ",":
-                                continue
-                            elif x == "[":
-                                count_list.reverse()
-                                stack.append(operators[token][1](*count_list))
-                                count_list.clear()
-                                break
-                            else:
-                                count_list.append(x)
-                else:
-                    stack.append(token)
-            return stack[0]  # результат вычисления - единственный элемент в стеке
-        except Exception as e:
 
-            raise MyException(sys.exc_info()[1])
+        for token in DATA_OUT:
+            if token in operators:  # если приходящий элемент - оператор,
+                if token not in list_functions:
+                    if token == "-u" or token == "+u":
+                        stack.append(operators[token][1](stack.pop()))
+                    elif token == "^":
+                        y, x = stack.pop(), stack.pop()  # забираем 2 числа из стека
+                        stack.append(operators[token][1](x, y))
+                    else:
+                        y, x = stack.pop(), stack.pop()  # забираем 2 числа из стека
+                        stack.append(operators[token][1](x, y))
+                else:
+                    while stack:
+                        x = stack.pop()
+                        if x == "]" or x == ",":
+                            continue
+                        elif x == "[":
+                            count_list.reverse()
+                            stack.append(operators[token][1](*count_list))
+                            count_list.clear()
+                            break
+                        else:
+                            count_list.append(x)
+            else:
+                stack.append(token)
+        return stack[0]  # результат вычисления - единственный элемент в стеке
 
     return calc(DATA_OUT)
 
@@ -253,7 +256,12 @@ if __name__ == '__main__':
     MASS_EXPRESSION = [
         # # Unary operators
         # ("-13", -13),
-        ("123+", 123),
+        # ("2+ +2", 4),
+        # ("2>=2", True),
+        # ("2 < = 2", True),
+        ("2 **2", True),
+        # ("2  < + 2", False),
+        # ("2  < ++ ++ 2", False),
         # ("6-(-13)", 19),
         # ("1-- -1", 0),
         # ("1---1", 0),
@@ -392,63 +400,7 @@ if __name__ == '__main__':
         #  * "6 < = 6"
         #  * "6 * * 6"
         #  * "((((("
-        # # My cases
-        # ("-2", -2),
-        # ("3-2", 1),
-        # ("(-3)", -3),
-        # ("((-4))", -4),
-        # ("-((5))", -5),
-        # ("(-(6))", -6),
-        # ("-2+1+1", 0),
-        # ("-2-1", -3),
-        # ("-2*1", -2),
-        # ("2*-1", -2),
-        # ("5^-1", 0.2),
-        # ("5^-1-1", -0.8),
-        # ("5^-1*2", 0.4),
-        # ("-53/10", -5.3),
-        # ("+abs(-53/10)", 5.3),
-        # ("-(2)+1+1", 0),
-        # ("(-2)+1+1", 0),
-        # ("-(2+1+1)", -4),
-        # ("3+2+2", 7),
-        # ("2*(1+1)", 4),
-        # ("pow(2,2)", 4),
-        # ("pow(2,pow(2,1))", 4),
-        # ("pow(2,-(2))", 0.25),
-        # ("pow(2,(-2))", 0.25),
-        # ("2*-2", -4),
-        # ("2+2*-2", -2),
-        # ("2^2^3", 256),
-        # ("2-2-3", -3),
-        # ("5/-1*2", -10),
-        # ("5/-1", -5),
-        # ("5^-1/2", 0.1),
-        # ("-5^-1-1", -1.2),
-        # ("5^-(1)", 0.2),
-        # ("5^-(.1)", 0.8513399225207846),
-        # ("5^-.1", 0.8513399225207846),
-        # ("5^(-1)", 0.2),
-        # ("5^(1)", 5),
-        # ("2/5^(-(1))", 10),
-        # ("2/5^(-1)", 10),
-        # ("--2+2++-+-2", 6),
-        # ("-5^2", -25),
-        # ("round(2*2*2+2,2)", 10),
-        # ("-5^-1", -0.2),
-        # ("2/-5^-1", -10.0),
-        # ("round(2^2,2)", 4),
-        # ("round(2^2)", 4),
-        # ("-(-2)", 2),
-        # ("round(1>=1)", 1),
-        # ("-(2+1+(-2))", -1),
-        # ("round((2/3)^213,round(1+114+332.2/4))", 3.1085783725131357e-38),
-        # ("round((2/3)^213,round(1+114+332.2/4))/5^-1-1", -1.0),
-        # ("round((2/3))", 1),
-        # ("round(1/3,2)", 0.33),
-        # ("sin(1/3)", 0.3271946967961522),
-        # ("2+sin(1/3)", 2.3271946967961523),
-        # ("-sin(2)^2", -0.826821810431806),
+
     ]
     for counter, EXPRESSION in enumerate(MASS_EXPRESSION):
         try:
@@ -457,6 +409,5 @@ if __name__ == '__main__':
                 print("{}\t\t{}".format("Done", EXPRESSION[0]))
             else:
                 print("{}\t\t{}".format("False", EXPRESSION[0]))
-        except (Exception, MyException) as e:
-            print(e.message, file=sys.stderr)
-            # raise SystemExit
+        except MyException as e:
+            print(e.message)
