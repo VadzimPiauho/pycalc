@@ -1,5 +1,5 @@
 import math
-import sys
+
 
 from exception import MyException
 
@@ -122,7 +122,7 @@ def test_func(EXPRESSION, operators):
                         oper = replace_plus_minus(oper)
                 elif oper:  # если символ не оператор, то выдаём собранный оператор и начинаем собирать заново
                     if oper in operators:
-                        if EXPRESSION_PARSE and EXPRESSION_PARSE[-1] == "-u" or EXPRESSION_PARSE[-1] == "+u":
+                        if EXPRESSION_PARSE and (EXPRESSION_PARSE[-1] == "-u" or EXPRESSION_PARSE[-1] == "+u"):
                             oper += 'u'
                             x = EXPRESSION_PARSE.pop()
                             if x == oper == "+u":
@@ -131,8 +131,8 @@ def test_func(EXPRESSION, operators):
                                 EXPRESSION_PARSE.append("+u")
                             elif (x == "-u" and oper == "+u") or (x == "+u" and oper == "-u"):
                                 EXPRESSION_PARSE.append("-u")
-                        elif (oper == "+" or oper == "-") and EXPRESSION_PARSE and EXPRESSION_PARSE[-1] == "-" or \
-                                EXPRESSION_PARSE[-1] == "+":
+                        elif (oper == "+" or oper == "-") and EXPRESSION_PARSE and (EXPRESSION_PARSE[-1] == "-" or \
+                                                                                    EXPRESSION_PARSE[-1] == "+"):
                             oper += EXPRESSION_PARSE.pop()
                             EXPRESSION_PARSE.append(replace_plus_minus(oper))
                         else:
@@ -157,6 +157,8 @@ def test_func(EXPRESSION, operators):
                                     elif x == "[":
                                         EXPRESSION_PARSE.append("]")
                                         break
+                        if not bracket_stack:
+                            raise MyException("brackets are not balanced")
                     else:
                         EXPRESSION_PARSE.append(val)
             if number:  # если в конце строки есть число, выдаём его
@@ -183,27 +185,30 @@ def test_func(EXPRESSION, operators):
 
     for i in EXPRESSION_PARSE:  # преобразуем выражение после парсинга по алгоритму обратной польской записи
         if i in operators:
-            while STACK_OPERATOR and STACK_OPERATOR[-1] != "(" and operators[i][0] <= operators[STACK_OPERATOR[-1]][0]:
-                x = STACK_OPERATOR.pop()
-                # if (x == "+u" or x == "-u") and i in "+-*/":
-                #     if len(STACK_OPERATOR) >= 1:
-                #         DATA_OUT.append(x)
-                #         #DATA_OUT.append(STACK_OPERATOR.pop())
-                #     else:
-                #         DATA_OUT.append(x)
-                #         break
-                # elif x == "+u" or x == "-u":
-                #     STACK_OPERATOR.append(x)
-                #     break
-                if x == "^" and i == "^":  # решение проблемы приоритетов если 5^-1
-                    STACK_OPERATOR.append(i)
-                    break
-                elif (i == "+u" or i == "-u") and x == "^":
-                    STACK_OPERATOR.append(x)
-                    break
-                else:
-                    DATA_OUT.append(x)
-            STACK_OPERATOR.append(i)
+            try:
+                while STACK_OPERATOR and STACK_OPERATOR[-1] != "(" and operators[i][0] <= operators[STACK_OPERATOR[-1]][0]:
+                    x = STACK_OPERATOR.pop()
+                    # if (x == "+u" or x == "-u") and i in "+-*/":
+                    #     if len(STACK_OPERATOR) >= 1:
+                    #         DATA_OUT.append(x)
+                    #         #DATA_OUT.append(STACK_OPERATOR.pop())
+                    #     else:
+                    #         DATA_OUT.append(x)
+                    #         break
+                    # elif x == "+u" or x == "-u":
+                    #     STACK_OPERATOR.append(x)
+                    #     break
+                    if x == "^" and i == "^":  # решение проблемы приоритетов если 5^-1
+                        STACK_OPERATOR.append(i)
+                        break
+                    elif (i == "+u" or i == "-u") and x == "^":
+                        STACK_OPERATOR.append(x)
+                        break
+                    else:
+                        DATA_OUT.append(x)
+                STACK_OPERATOR.append(i)
+            except TypeError:
+                raise MyException("Error calculation")
         elif i == ")":  # если ")" выдаем из стека операторов все элементы по не "("
             while STACK_OPERATOR:
                 x = STACK_OPERATOR.pop()
@@ -254,7 +259,7 @@ def test_func(EXPRESSION, operators):
                             count_list.append(x)
             else:
                 stack.append(token)
-        if stack:
+        if len(stack)>=2:
             raise MyException("Error calculation")
         return stack[0]  # результат вычисления - единственный элемент в стеке
 
@@ -390,23 +395,23 @@ if __name__ == '__main__':
         # ("2+sin(1/3)", 2.3271946967961523),
         # ("-sin(2)^2", -0.826821810431806),
 
-        # Error cases
+        # # Error cases
         # ("",),
         # ("+",),
         # ("1-",),
         # ("1 2",),
         # ("ee",),
         # ("123e",),
-        ("==7",),
+        # ("==7",),
         # ("1 * * 2",),
         # ("1 + 2(3 * 4))",),
         # ("((1+2)",),
         # ("1 + 1 2 3 4 5 6 ",),
         # ("log100(100)",),
         # ("------",),
-        ("5 > = 6",),
+        # ("5 > = 6",),
         # ("5 / / 6",),
-        ("6 < = 6",),
+        # ("6 < = 6",),
         # ("6 * * 6",),
         # ("(((((",),
 
