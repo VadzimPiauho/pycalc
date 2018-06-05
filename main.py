@@ -3,6 +3,7 @@ import argparse
 from pycalc.calc_function import calc
 from pycalc.parse_epression import list_module, operators, static_value, parse_expression, list_functions
 from pycalc.poland_notation_function import poland_notation
+from exception import MyException
 
 parser = argparse.ArgumentParser(description='Pure-python command-line calculator.')
 
@@ -38,7 +39,12 @@ def test(expression):
 
 
 if __name__ == '__main__':
-    EXPRESSION = parse_expression(args.EXPRESSION)
-    EXPRESSION = poland_notation(EXPRESSION)
-    EXPRESSION = calc(EXPRESSION)
-    print(EXPRESSION)
+    try:
+        EXPRESSION = parse_expression(args.EXPRESSION)
+        EXPRESSION = poland_notation(EXPRESSION)
+        EXPRESSION = calc(EXPRESSION)
+        print(EXPRESSION)
+    except MyException as e:
+        print(e.message)
+    except Exception as e:
+        raise MyException("{}".format(e))

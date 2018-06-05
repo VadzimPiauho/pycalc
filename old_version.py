@@ -170,8 +170,12 @@ def test_func(EXPRESSION, operators):
             elif func:
                 if func in static_value:
                     EXPRESSION_PARSE.append(static_value[func])
+                else:
+                    raise MyException("I don't found function {}".format(func))
             elif oper:
                 EXPRESSION_PARSE.append(oper)
+            elif bracket_stack:
+                raise MyException("brackets are not balanced")
         else:
             raise MyException("expression is empty")
 
@@ -225,14 +229,17 @@ def test_func(EXPRESSION, operators):
         for token in DATA_OUT:
             if token in operators:  # если приходящий элемент - оператор,
                 if token not in list_functions:
-                    if token == "-u" or token == "+u":
-                        stack.append(operators[token][1](stack.pop()))
-                    elif token == "^":
-                        y, x = stack.pop(), stack.pop()  # забираем 2 числа из стека
-                        stack.append(operators[token][1](x, y))
-                    else:
-                        y, x = stack.pop(), stack.pop()  # забираем 2 числа из стека
-                        stack.append(operators[token][1](x, y))
+                    try:
+                        if token == "-u" or token == "+u":
+                            stack.append(operators[token][1](stack.pop()))
+                        elif token == "^":
+                            y, x = stack.pop(), stack.pop()  # забираем 2 числа из стека
+                            stack.append(operators[token][1](x, y))
+                        else:
+                            y, x = stack.pop(), stack.pop()  # забираем 2 числа из стека
+                            stack.append(operators[token][1](x, y))
+                    except IndexError:
+                        raise MyException("Error calculation")
                 else:
                     while stack:
                         x = stack.pop()
@@ -247,6 +254,8 @@ def test_func(EXPRESSION, operators):
                             count_list.append(x)
             else:
                 stack.append(token)
+        if stack:
+            raise MyException("Error calculation")
         return stack[0]  # результат вычисления - единственный элемент в стеке
 
     return calc(DATA_OUT)
@@ -259,7 +268,7 @@ if __name__ == '__main__':
         # ("2+ +2", 4),
         # ("2>=2", True),
         # ("2 < = 2", True),
-        ("2 **2", True),
+        # ("2 **2", True),
         # ("2  < + 2", False),
         # ("2  < ++ ++ 2", False),
         # ("6-(-13)", 19),
@@ -382,24 +391,24 @@ if __name__ == '__main__':
         # ("-sin(2)^2", -0.826821810431806),
 
         # Error cases
-        # *""
-        #  * "+"
-        #  * "1-"
-        #  * "1 2"
-        #  * "ee"
-        #  * "123e"
-        #  * "==7"
-        #  * "1 * * 2"
-        #  * "1 + 2(3 * 4))"
-        #  * "((1+2)"
-        #  * "1 + 1 2 3 4 5 6 "
-        #  * "log100(100)"
-        #  * "------"
-        #  * "5 > = 6"
-        #  * "5 / / 6"
-        #  * "6 < = 6"
-        #  * "6 * * 6"
-        #  * "((((("
+        # ("",),
+        # ("+",),
+        # ("1-",),
+        # ("1 2",),
+        # ("ee",),
+        # ("123e",),
+        ("==7",),
+        # ("1 * * 2",),
+        # ("1 + 2(3 * 4))",),
+        # ("((1+2)",),
+        # ("1 + 1 2 3 4 5 6 ",),
+        # ("log100(100)",),
+        # ("------",),
+        ("5 > = 6",),
+        # ("5 / / 6",),
+        ("6 < = 6",),
+        # ("6 * * 6",),
+        # ("(((((",),
 
     ]
     for counter, EXPRESSION in enumerate(MASS_EXPRESSION):

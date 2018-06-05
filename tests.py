@@ -9,29 +9,6 @@
 import unittest
 from main import test
 
-MASS_EXPRESSION = [
-
-    # # Error cases
-    #  * ""
-    #  * "+"
-    #  * "1-"
-    #  * "1 2"
-    #  * "ee"
-    #  * "123e"
-    #  * "==7"
-    #  * "1 * * 2"
-    #  * "1 + 2(3 * 4))"
-    #  * "((1+2)"
-    #  * "1 + 1 2 3 4 5 6 "
-    #  * "log100(100)"
-    #  * "------"
-    #  * "5 > = 6"
-    #  * "5 / / 6"
-    #  * "6 < = 6"
-    #  * "6 * * 6"
-    #  * "((((("
-]
-
 
 class CalcTest(unittest.TestCase):
     def test_unary(self):
@@ -194,6 +171,31 @@ class CalcTest(unittest.TestCase):
             ("sin(1/3)", 0.3271946967961522),
             ("2+sin(1/3)", 2.3271946967961523),
             ("-sin(2)^2", -0.826821810431806),
+        ]
+        for counter, EXPRESSION in enumerate(test_list):
+            self.assertEqual(test(EXPRESSION[0]), EXPRESSION[1])
+
+    def test_error(self):
+        # Error cases
+        test_list = [
+            # ("",),
+            # ("+",),
+            # ("1-",),
+            # ("1 2",),
+            # ("ee",),
+            # ("123e",),
+            # ("==7",),
+            # ("1 * * 2",),
+            # ("1 + 2(3 * 4))",),
+            # ("((1+2)",),
+            # ("1 + 1 2 3 4 5 6 ",),
+            # ("log100(100)",),
+            # ("------",),
+            # ("5 > = 6",),
+            # ("5 / / 6",),
+            # ("6 < = 6",),
+            # ("6 * * 6",),
+            # ("(((((",),
         ]
         for counter, EXPRESSION in enumerate(test_list):
             self.assertEqual(test(EXPRESSION[0]), EXPRESSION[1])
