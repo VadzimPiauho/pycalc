@@ -46,6 +46,7 @@ if __name__ == '__main__':
         EXPRESSION = parse_expression(args.EXPRESSION)
         EXPRESSION = poland_notation(EXPRESSION)
         EXPRESSION = calc(EXPRESSION)
+        print(EXPRESSION)
     except (MyException, ImportError) as e:
         print(e.message)
     except Exception as e:
