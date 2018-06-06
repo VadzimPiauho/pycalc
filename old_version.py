@@ -69,7 +69,7 @@ def test_func(EXPRESSION, operators):
         oper = ''
         bracket_stack = []
         if EXPRESSION:
-            for ind, val in enumerate(EXPRESSION):
+            for val in EXPRESSION:
                 # if val in " ":
                 #     continue
                 if val in '1234567890.':  # если символ - цифра, то собираем число
@@ -399,7 +399,7 @@ if __name__ == '__main__':
         # ("-sin(2)^2", -0.826821810431806),
 
         # Error cases
-        # ("",),
+        ("",),
         # ("+",),
         # ("1-",),
         # ("1 2",),
