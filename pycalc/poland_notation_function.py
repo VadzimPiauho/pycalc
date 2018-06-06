@@ -1,4 +1,5 @@
 from .parse_epression import operators
+from exception import MyException
 
 
 def poland_notation(expression_parse):
@@ -11,17 +12,20 @@ def poland_notation(expression_parse):
     data_out = []
     for i in expression_parse:  # преобразуем выражение после парсинга по алгоритму обратной польской записи
         if i in operators:
-            while stack_operator and stack_operator[-1] != "(" and operators[i][0] <= operators[stack_operator[-1]][0]:
-                x = stack_operator.pop()
-                if x == "^" and i == "^":  # решение проблемы приоритетов если 5^-1
-                    stack_operator.append(i)
-                    break
-                elif (i == "+u" or i == "-u") and x == "^":
-                    stack_operator.append(x)
-                    break
-                else:
-                    data_out.append(x)
-            stack_operator.append(i)
+            try:
+                while stack_operator and stack_operator[-1] != "(" and operators[i][0] <= operators[stack_operator[-1]][0]:
+                    x = stack_operator.pop()
+                    if x == "^" and i == "^":  # решение проблемы приоритетов если 5^-1
+                        stack_operator.append(i)
+                        break
+                    elif (i == "+u" or i == "-u") and x == "^":
+                        stack_operator.append(x)
+                        break
+                    else:
+                        data_out.append(x)
+                stack_operator.append(i)
+            except TypeError:
+                raise MyException("Error calculation")
         elif i == ")":  # если ")" выдаем из стека операторов все элементы пока не "("
             while stack_operator:
                 x = stack_operator.pop()

@@ -1,6 +1,5 @@
 import math
 
-
 from exception import MyException
 
 static_value = {}
@@ -80,7 +79,7 @@ def test_func(EXPRESSION, operators):
                             func = func + val
                             continue
                         else:
-                            raise MyException("I don't found function {}".format(tmp))
+                            raise MyException("Function {} not found".format(tmp))
                         # else:
                         #     number += val
                     else:
@@ -141,7 +140,7 @@ def test_func(EXPRESSION, operators):
                             EXPRESSION_PARSE.append(oper)
                         oper = ''
                     else:
-                        raise MyException("Dont find operator {}".format(oper))
+                        raise MyException("Operator {} not found".format(oper))
                 if val in "(),":  # если символ "(),"
                     if val == "(":
                         bracket_stack.append(val)  # добавляем в стек скобок
@@ -189,7 +188,8 @@ def test_func(EXPRESSION, operators):
     for i in EXPRESSION_PARSE:  # преобразуем выражение после парсинга по алгоритму обратной польской записи
         if i in operators:
             try:
-                while STACK_OPERATOR and STACK_OPERATOR[-1] != "(" and operators[i][0] <= operators[STACK_OPERATOR[-1]][0]:
+                while STACK_OPERATOR and STACK_OPERATOR[-1] != "(" and operators[i][0] <= operators[STACK_OPERATOR[-1]][
+                    0]:
                     x = STACK_OPERATOR.pop()
                     # if (x == "+u" or x == "-u") and i in "+-*/":
                     #     if len(STACK_OPERATOR) >= 1:
@@ -262,7 +262,7 @@ def test_func(EXPRESSION, operators):
                             count_list.append(x)
             else:
                 stack.append(token)
-        if len(stack)>=2:
+        if len(stack) >= 2:
             raise MyException("Error calculation")
         return stack[0]  # результат вычисления - единственный элемент в стеке
 
@@ -399,25 +399,25 @@ if __name__ == '__main__':
         # ("-sin(2)^2", -0.826821810431806),
 
         # Error cases
-        ("",),
-        ("+",),
-        ("1-",),
-        ("1 2",),
-        ("ee",),
-        ("123e",),
-        ("==7",),
-        ("1 * * 2",),
-        ("1 + 2(3 * 4))",),
-        ("((1+2)",),
-        ("1 + 1 2 3 4 5 6 ",),
-        (")1 + 1 2 3 4 5 6 ",),
-        ("log100(100)",),
-        ("------",),
-        ("5 > = 6",),
-        ("5 / / 6",),
-        ("6 < = 6",),
-        ("6 * * 6",),
-        ("(((((",),
+        # ("",),
+        # ("+",),
+        # ("1-",),
+        # ("1 2",),
+        # ("ee",),
+        # ("123e",),
+        # ("==7",),
+        # ("1 * * 2",),
+        # ("1 + 2(3 * 4))",),
+        # ("((1+2)",),
+        # ("1 + 1 2 3 4 5 6 ",),
+        # (")1 + 1 2 3 4 5 6 ",),
+        # ("log100(100)",),
+        # ("------",),
+        # ("5 > = 6",),
+        # ("5 / / 6",),
+        # ("6 < = 6",),
+        # ("6 * * 6",),
+        # ("(((((",),
 
     ]
     for counter, EXPRESSION in enumerate(MASS_EXPRESSION):

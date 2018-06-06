@@ -78,6 +78,8 @@ def parse_expression(expression):
                     if any(tmp in s for s in list_functions):
                         func = func + val
                         continue
+                    else:
+                        raise MyException("Function {} not found".format(tmp))
                     # else:
                     #     number += val
                 else:
@@ -121,7 +123,7 @@ def parse_expression(expression):
                     operator = replace_plus_minus(operator)
             elif operator:  # если символ не оператор, то выдаём собранный оператор и начинаем собирать заново
                 if operator in operators:
-                    if expression_parse and expression_parse[-1] == "-u" or expression_parse[-1] == "+u":
+                    if expression_parse and (expression_parse[-1] == "-u" or expression_parse[-1] == "+u"):
                         operator += 'u'
                         x = expression_parse.pop()
                         if x == operator == "+u":
@@ -130,34 +132,39 @@ def parse_expression(expression):
                             expression_parse.append("+u")
                         elif (x == "-u" and operator == "+u") or (x == "+u" and operator == "-u"):
                             expression_parse.append("-u")
-                    elif (operator == "+" or operator == "-") and expression_parse and expression_parse[-1] == "-" or \
-                            expression_parse[-1] == "+":
+                    elif (operator == "+" or operator == "-") and expression_parse and (expression_parse[-1] == "-" or \
+                            expression_parse[-1] == "+"):
                         operator += expression_parse.pop()
                         expression_parse.append(replace_plus_minus(operator))
                     else:
                         expression_parse.append(operator)
                     operator = ''
+                else:
+                    raise MyException("Operator {} not found".format(operator))
             if val in "(),":  # если символ "(),"
                 if val == "(":
                     bracket_stack.append(val)  # добавляем в стек скобок
                     expression_parse.append(val)  # добавляем в итоговое выражение
                 elif val == ")":
-                    while bracket_stack:  # проверяем стек скобок
-                        x = bracket_stack.pop()
-                        if x == "(":  # если в стеке скобок "("
-                            expression_parse.append(val)  # добавляем в итоговое выражение ")
-                            if len(bracket_stack):
-                                x = bracket_stack.pop()
-                                if x == "(":
-                                    bracket_stack.append(x)
-                                    break
-                                elif x == "[":
-                                    expression_parse.append("]")
-                                    break
+                    if bracket_stack:
+                        while bracket_stack:  # проверяем стек скобок
+                            x = bracket_stack.pop()
+                            if x == "(":  # если в стеке скобок "("
+                                expression_parse.append(val)  # добавляем в итоговое выражение ")
+                                if len(bracket_stack):
+                                    x = bracket_stack.pop()
+                                    if x == "(":
+                                        bracket_stack.append(x)
+                                        break
+                                    elif x == "[":
+                                        expression_parse.append("]")
+                                        break
+                    elif not bracket_stack:
+                        raise MyException("brackets are not balanced")
                 else:
                     expression_parse.append(val)
     else:
-        raise MyException("expression is empty")
+        raise MyException("Expression is empty")
     if number:  # если в конце строки есть число, выдаём его
         if expression_parse and (expression_parse[-1] == ")" or expression_parse[-1] == "]"):
             # если перед полследним числом ")" или "ъ",
@@ -169,6 +176,10 @@ def parse_expression(expression):
     elif func:
         if func in static_value:
             expression_parse.append(static_value[func])
+        else:
+            raise MyException("Function {} not found".format(func))
+    elif operator:
+        expression_parse.append(operator)
     elif bracket_stack:
-        raise MyException("brackets are not balanced")
+        raise MyException("brackets are not balanced1123213")
     return expression_parse

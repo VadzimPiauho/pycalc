@@ -14,16 +14,19 @@ parser.add_argument('-m', '--use-modules', nargs='+', action="store", dest="MODU
 args = parser.parse_args()
 
 if args.MODULE:
-    list_module = ["math"].extend(args.MODULE)
+    list_module = ["math"] + args.MODULE
 
 for modname in list_module:
-    modules = __import__(modname)
-    for key in modules.__dict__:
-        if callable(modules.__dict__[key]):
-            operators[key] = (7, getattr(modules, key))
-            list_functions.append(key)
-        else:
-            static_value[key] = getattr(modules, key)
+    try:
+        modules = __import__(modname)
+        for key in modules.__dict__:
+            if callable(modules.__dict__[key]):
+                operators[key] = (7, getattr(modules, key))
+                list_functions.append(key)
+            else:
+                static_value[key] = getattr(modules, key)
+    except ImportError:
+        raise ImportError("Module {} not found:".format(modname))
 
 
 def test(expression):
@@ -32,19 +35,25 @@ def test(expression):
     :param expression: Expression for testing
     :return: result of expression
     """
-    exp = parse_expression(expression)
-    exp = poland_notation(exp)
-    exp = calc(exp)
-    return exp
+    try:
+        exp = parse_expression(expression)
+        exp = poland_notation(exp)
+        exp = calc(exp)
+        return exp
+    except MyException:
+        raise
 
 
 if __name__ == '__main__':
     try:
+        # print(args)
         EXPRESSION = parse_expression(args.EXPRESSION)
+        print(EXPRESSION)
         EXPRESSION = poland_notation(EXPRESSION)
+        print(EXPRESSION)
         EXPRESSION = calc(EXPRESSION)
         print(EXPRESSION)
-    except MyException as e:
+    except (MyException, ImportError) as e:
         print(e.message)
     except Exception as e:
         raise MyException("{}".format(e))

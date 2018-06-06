@@ -179,7 +179,7 @@ class CalcTest(unittest.TestCase):
     def test_error(self):
         # Error cases
         test_list = [
-            # ("",),
+            ("",),
             # ("+",),
             # ("1-",),
             # ("1 2",),
