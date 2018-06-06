@@ -35,24 +35,17 @@ def test(expression):
     :param expression: Expression for testing
     :return: result of expression
     """
-    try:
-        exp = parse_expression(expression)
-        exp = poland_notation(exp)
-        exp = calc(exp)
-        return exp
-    except MyException:
-        raise
+    exp = parse_expression(expression)
+    exp = poland_notation(exp)
+    exp = calc(exp)
+    return exp
 
 
 if __name__ == '__main__':
     try:
-        # print(args)
         EXPRESSION = parse_expression(args.EXPRESSION)
-        print(EXPRESSION)
         EXPRESSION = poland_notation(EXPRESSION)
-        print(EXPRESSION)
         EXPRESSION = calc(EXPRESSION)
-        print(EXPRESSION)
     except (MyException, ImportError) as e:
         print(e.message)
     except Exception as e:
