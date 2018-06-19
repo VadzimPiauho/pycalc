@@ -1,52 +1,47 @@
 import argparse
 
+from import_module import imp_module
 from pycalc.calc_function import calc
-from pycalc.parse_epression import list_module, operators, static_value, parse_expression, list_functions
+from pycalc.parse_epression import parse_expression, list_module
 from pycalc.poland_notation_function import poland_notation
 from exception import MyException
 
-parser = argparse.ArgumentParser(description='Pure-python command-line calculator.')
 
-parser.add_argument('EXPRESSION', action="store", type=str, help="expression string to evaluate")
-parser.add_argument('-m', '--use-modules', nargs='+', action="store", dest="MODULE", type=str,
-                    help="additional modules to use")
+def _parse_args():
+    """
+    Function of parsing arguments
+    """
+    parser = argparse.ArgumentParser(description='Pure-python command-line calculator.')
 
-args = parser.parse_args()
+    parser.add_argument('EXPRESSION', action="store", type=str, help="expression string to evaluate")
+    parser.add_argument('-m', '--use-modules', nargs='+', action="store", dest="MODULE", type=str,
+                        help="additional modules to use")
 
-if args.MODULE:
-    list_module = ["math"] + args.MODULE
+    return parser.parse_args()
 
-for modname in list_module:
+
+def main(expression):
+    """
+    Function of converting an expression to a reverse polish notation
+    :param expression: entrance expression
+    :return: counting result
+    """
     try:
-        modules = __import__(modname)
-        for key in modules.__dict__:
-            if callable(modules.__dict__[key]):
-                operators[key] = (7, getattr(modules, key))
-                list_functions.append(key)
-            else:
-                static_value[key] = getattr(modules, key)
-    except ImportError:
-        raise ImportError("Module {} not found:".format(modname))
+        exception = parse_expression(expression)
+        return calc(poland_notation(exception))
+    except (MyException, ImportError) as e:
+        raise MyException("{}".format(e))
+    except Exception as e:
+        raise MyException("{}".format(e))
 
 
-def test(expression):
-    """
-    Function of testing the program
-    :param expression: Expression for testing
-    :return: result of expression
-    """
-    exp = parse_expression(expression)
-    exp = poland_notation(exp)
-    exp = calc(exp)
-    return exp
+def _main():
+    args = _parse_args()
+    if args.MODULE:
+        list_module.extend(args.MODULE)
+    imp_module()
+    print(main(args.EXPRESSION))
 
 
 if __name__ == '__main__':
-    try:
-        EXPRESSION = parse_expression(args.EXPRESSION)
-        EXPRESSION = poland_notation(EXPRESSION)
-        EXPRESSION = calc(EXPRESSION)
-    except (MyException, ImportError) as e:
-        print(e.message)
-    except Exception as e:
-        raise MyException("{}".format(e))
+    _main()

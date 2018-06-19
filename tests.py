@@ -7,8 +7,9 @@
 
 
 import unittest
-from main import test
 from exception import MyException
+from import_module import imp_module
+from main import main
 
 
 class CalcTest(unittest.TestCase):
@@ -21,10 +22,11 @@ class CalcTest(unittest.TestCase):
             ("1-- -1", 0),
             ("1---1", 0),
             ("1 -  1", 0),
-            ("-+---+-1", -1), 
+            ("-+---+-1", -1),
         ]
+        imp_module()
         for EXPRESSION in test_list:
-            self.assertEqual(test(EXPRESSION[0]), EXPRESSION[1])
+            self.assertEqual(main(EXPRESSION[0]), EXPRESSION[1])
 
     def test_operation(self):
         # Operation priority
@@ -36,8 +38,9 @@ class CalcTest(unittest.TestCase):
             ("100/3^2", 11.11111111111111),
             ("100/3%2^2", 1.3333333333333357),
         ]
+        imp_module()
         for EXPRESSION in test_list:
-            self.assertEqual(test(EXPRESSION[0]), EXPRESSION[1])
+            self.assertEqual(main(EXPRESSION[0]), EXPRESSION[1])
 
     def test_functions(self):
         # Functions and constants
@@ -49,8 +52,9 @@ class CalcTest(unittest.TestCase):
             ("sin(pi/2)1116", 1116.0),
             ("2*sin(pi/2)", 2.0),
         ]
+        imp_module()
         for EXPRESSION in test_list:
-            self.assertEqual(test(EXPRESSION[0]), EXPRESSION[1])
+            self.assertEqual(main(EXPRESSION[0]), EXPRESSION[1])
 
     def test_associative(self):
         # Associative
@@ -59,8 +63,9 @@ class CalcTest(unittest.TestCase):
             ("100/4/3", 8.333333333333334),
             ("2^3^4", 2417851639229258349412352),
         ]
+        imp_module()
         for EXPRESSION in test_list:
-            self.assertEqual(test(EXPRESSION[0]), EXPRESSION[1])
+            self.assertEqual(main(EXPRESSION[0]), EXPRESSION[1])
 
     def test_comparison(self):
         # Comparison operators
@@ -69,8 +74,9 @@ class CalcTest(unittest.TestCase):
             ("e^5>=e^5+1", False),
             ("1+24/3+1!=1+24/3+2", True),
         ]
+        imp_module()
         for EXPRESSION in test_list:
-            self.assertEqual(test(EXPRESSION[0]), EXPRESSION[1])
+            self.assertEqual(main(EXPRESSION[0]), EXPRESSION[1])
 
     def test_common(self):
         # Common tests
@@ -110,8 +116,9 @@ class CalcTest(unittest.TestCase):
             ("cos(-sin(-3.0*5.0)-sin(cos(log10(43.0))))+cos(sin(sin(34.0-2.0^2.0)))",
              1.4277017012821114),
         ]
+        imp_module()
         for EXPRESSION in test_list:
-            self.assertEqual(test(EXPRESSION[0]), EXPRESSION[1])
+            self.assertEqual(main(EXPRESSION[0]), EXPRESSION[1])
 
     def test_my(self):
         # My cases
@@ -176,8 +183,9 @@ class CalcTest(unittest.TestCase):
             ("2+sin(1/3)", 2.3271946967961523),
             ("-sin(2)^2", -0.826821810431806),
         ]
+        imp_module()
         for EXPRESSION in test_list:
-            self.assertEqual(test(EXPRESSION[0]), EXPRESSION[1])
+            self.assertEqual(main(EXPRESSION[0]), EXPRESSION[1])
 
     def test_error(self):
         # Error cases
@@ -201,9 +209,10 @@ class CalcTest(unittest.TestCase):
             "6 * * 6",
             "(((((",
         ]
+        imp_module()
         for EXPRESSION in test_list:
             with self.assertRaises(MyException):
-                test(EXPRESSION)
+                main(EXPRESSION)
 
 
 if __name__ == '__main__':

@@ -181,5 +181,5 @@ def parse_expression(expression):
     elif operator:
         expression_parse.append(operator)
     elif bracket_stack:
-        raise MyException("brackets are not balanced1123213")
+        raise MyException("brackets are not balanced")
     return expression_parse
