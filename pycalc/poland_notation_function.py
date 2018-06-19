@@ -1,5 +1,5 @@
-from .parse_epression import operators
-from exception import MyException
+from pycalc.parse_epression import operators
+from pycalc.exception import MyException
 
 
 def poland_notation(expression_parse):

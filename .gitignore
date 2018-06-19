@@ -9,6 +9,8 @@
 # virtualenvs
 **/py_env
 **/venv
+**/dist
+**/pycalc.egg-info
 **/.vs
 
 # coverage report

@@ -1,5 +1,5 @@
-from .parse_epression import operators, list_functions
-from exception import MyException
+from pycalc.parse_epression import operators, list_functions
+from pycalc.exception import MyException
 
 
 def calc(data_out):

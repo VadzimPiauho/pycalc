@@ -1,4 +1,4 @@
-from exception import MyException
+from pycalc.exception import MyException
 
 list_module = ["math"]
 list_functions = ["abs", "pow", "round"]  # лист имеющихся функций в выражении

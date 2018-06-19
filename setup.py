@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#python setup.py sdist
 
 import setuptools
 
@@ -14,9 +15,10 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/VadzimPiauho/pycalc",
-    packages=("pycalc",),
+    packages=setuptools.find_packages(),
     entry_points={
         'console_scripts':
-            ['pycalc = main:_main']
+            ['pycalc = pycalc.main:_main']
     },
+    test_suite='tests',
 )

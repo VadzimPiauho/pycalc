@@ -1,10 +1,12 @@
+#!/usr/bin/env python3
 import argparse
 
-from import_module import imp_module
+
 from pycalc.calc_function import calc
+from pycalc.import_module import imp_module
 from pycalc.parse_epression import parse_expression, list_module
 from pycalc.poland_notation_function import poland_notation
-from exception import MyException
+from pycalc.exception import MyException
 
 
 def _parse_args():
@@ -30,7 +32,9 @@ def main(expression):
         exception = parse_expression(expression)
         return calc(poland_notation(exception))
     except (MyException, ImportError) as e:
+        print(e.message)
         raise MyException("{}".format(e))
+        # raise SystemExit
     except Exception as e:
         raise MyException("{}".format(e))
 

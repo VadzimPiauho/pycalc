@@ -7,9 +7,9 @@
 
 
 import unittest
-from exception import MyException
-from import_module import imp_module
-from main import main
+from pycalc.exception import MyException
+from pycalc.import_module import imp_module
+from pycalc.main import main
 
 
 class CalcTest(unittest.TestCase):
@@ -104,17 +104,17 @@ class CalcTest(unittest.TestCase):
             ("(2.0^2.0*2.0^2.0)", 16),
             ("sin(e^log(e^e^sin(23.0),45.0) + cos(3.0+log10(e^-e)))", 0.76638122986603),
             ("sin(-cos(-sin(3.0)-cos(-sin(-3.0*5.0)-sin(cos(log10(43.0))))+cos(sin(sin(34.0-2.0^2.0)))) \
-            --cos(1.0)--cos(0.0)^3.0)", 0.5361064001012783),
+            --cos(1.0)--cos(0.0)^3.0)", 0.5361064001012784),
             ("--cos(1.0)--cos(0.0)^3.0", 1.5403023058681398),
             ("cos(sin(sin(34.0-2.0^2.0)))", 0.6712189482597033),
-            ("-sin(cos(log10(43.0)))", 0.06259017093637237),
+            ("-sin(cos(log10(43.0)))", 0.06259017093637215),
             ("-cos(-sin(-3.0*5.0))", -0.7959095686227995),
             ("-cos(-sin(3.0))", -0.9900590857598653),
             ("sin(-cos(-sin(3.0)-cos(-sin(-3.0*5.0))))", -0.5581746423992129),
             ("sin(-cos(-sin(3.0)-cos(-sin(-3.0*5.0)-sin(cos(log10(43.0))))+cos(sin(sin(34.0-2.0^2.0)))))",
              -0.8274124603473457),
             ("cos(-sin(-3.0*5.0)-sin(cos(log10(43.0))))+cos(sin(sin(34.0-2.0^2.0)))",
-             1.4277017012821114),
+             1.4277017012821116),
         ]
         imp_module()
         for EXPRESSION in test_list:

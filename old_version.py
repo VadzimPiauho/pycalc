@@ -1,6 +1,6 @@
 import math
 
-from exception import MyException
+from pycalc.exception import MyException
 
 static_value = {}
 list_functions = ["abs", "pow", "round"]  # лист имеющихся функций в выражении
