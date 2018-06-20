@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 import argparse
 
-
 from pycalc.calc_function import calc
+from pycalc.exception import MyException
 from pycalc.import_module import imp_module
 from pycalc.parse_epression import parse_expression, list_module
 from pycalc.poland_notation_function import poland_notation
-from pycalc.exception import MyException
 
 
 def _parse_args():
@@ -24,27 +23,29 @@ def _parse_args():
 
 def main(expression):
     """
-    Function of converting an expression to a reverse polish notation
+    Function of expression calculation
     :param expression: entrance expression
     :return: counting result
     """
-    try:
-        exception = parse_expression(expression)
-        return calc(poland_notation(exception))
-    except (MyException, ImportError) as e:
-        print(e.message)
-        raise MyException("{}".format(e))
-        # raise SystemExit
-    except Exception as e:
-        raise MyException("{}".format(e))
+
+    exception = parse_expression(expression)
+    return calc(poland_notation(exception))
 
 
 def _main():
-    args = _parse_args()
-    if args.MODULE:
-        list_module.extend(args.MODULE)
-    imp_module()
-    print(main(args.EXPRESSION))
+    """
+    Main Function
+    """
+    try:
+        args = _parse_args()
+        if args.MODULE:
+            list_module.extend(args.MODULE)
+        imp_module()
+        print(main(args.EXPRESSION))
+    except (MyException, ImportError) as e:
+        print(e.message)
+    except Exception as e:
+        raise MyException("{}".format(e))
 
 
 if __name__ == '__main__':
