@@ -2,6 +2,7 @@
 You are proposed to implement pure-python command-line calculator
 using **python 3.6**.
 
+
 ## Requirements
 Calculator should be a command-line utility which receives mathematical
 expression string as an argument and prints evaluated result:
