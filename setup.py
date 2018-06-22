@@ -17,9 +17,10 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/VadzimPiauho/pycalc",
     packages=['pycalc', ],  # setuptools.find_packages(),
+    py_modules=['main', ],
     entry_points={
         'console_scripts':
-            ['pycalc = pycalc.main:_main']
+            ['pycalc = main:_main']
     },
     test_suite='tests',
 )

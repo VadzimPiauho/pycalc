@@ -9,7 +9,7 @@
 import unittest
 from pycalc.exception import MyException
 from pycalc.import_module import imp_module
-from pycalc.main import main
+from main import main
 
 
 class CalcTest(unittest.TestCase):
